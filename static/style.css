@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    width: 420px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.drop-area {
+    border: 2px dashed #aaa;
+    padding: 20px;
+    margin: 15px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.drop-area.hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+    transform: scale(1.03);
+}
+
+button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #5a67d8;
+}
+
+.result {
+    margin-top: 20px;
+    text-align: left;
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 6px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.loader {
+    margin: 15px auto;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 14px;
+}
+
+.valid {
+    background: green;
+}
+
+.invalid {
+    background: red;
+}
+
+.file-name {
+    font-size: 14px;
+    color: #333;
+    margin-top: 5px;
+}
+
