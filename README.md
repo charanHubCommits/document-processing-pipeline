@@ -1,30 +1,30 @@
 # 📄 Intelligent Document Processing Pipeline
 
-## 🚀 Overview
+## Overview
 This project is an AI-powered document processing system that extracts structured data from images (invoices/forms) and validates the extracted information before triggering downstream actions.
 
 The system is designed as a modular pipeline to simulate real-world document automation workflows.
 
 ---
 
-## 🧠 Features
+## Features
 
-- 📤 Upload document (JPG/PNG)
-- 🔍 OCR-based text extraction
-- 🧾 Field extraction (Name, Amount, Date, ID)
-- ✅ Data validation with error handling
-- 📦 Structured JSON output
-- ⚡ Action trigger (store processed data)
+- Upload document (JPG/PNG)
+- OCR-based text extraction
+- Field extraction (Name, Amount, Date, ID)
+- Data validation with error handling
+- Structured JSON output
+- Action trigger (store processed data)
 
 ---
 
-## 🏗️ Architecture Diagram
+## Architecture Diagram
 
 ![Architecture](assets/architecture.png)
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 - Python
 - Flask
@@ -33,7 +33,7 @@ The system is designed as a modular pipeline to simulate real-world document aut
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 project/
 │── app.py              # Main Flask app
@@ -46,7 +46,7 @@ project/
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 ### 1. Clone the repository
 ### 2. Activate virtual environment
@@ -58,7 +58,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 📥 Sample Input
+## Sample Input
 
 Invoice image containing:
 - Name
@@ -68,7 +68,7 @@ Invoice image containing:
 
 ---
 
-## 📤 Sample Output
+## Sample Output
 
 ```json
 {
