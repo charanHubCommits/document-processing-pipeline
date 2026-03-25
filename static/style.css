@@ -1,35 +1,22 @@
 body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #667eea, #764ba2);
-    height: 100vh;
     margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 14px;
-    width: 420px;
-    text-align: center;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
 }
 
 .drop-area {
-    border: 2px dashed #aaa;
-    padding: 20px;
+    border: 2px dashed #ccc;
+    padding: 15px;
     margin: 15px 0;
     cursor: pointer;
     border-radius: 8px;
-    transition: 0.3s;
+    text-align: center;
+    background: #fafafa;
 }
 
 .drop-area.hover {
     border-color: #667eea;
-    background: #f0f4ff;
-    transform: scale(1.03);
+    background: #eef2ff;
 }
 
 button {
@@ -97,3 +84,80 @@ button:hover {
     margin-top: 5px;
 }
 
+.progress-bar {
+    width: 100%;
+    background: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress {
+    height: 10px;
+    background: #667eea;
+}
+
+.main-container {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 28%;
+    background: #ffffff;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.content {
+    width: 72%;
+    padding: 30px;
+    overflow-y: auto;
+    background: #f7f9fc;
+}
+
+.logs {
+    margin-top: 10px;
+}
+
+.log-card {
+    background: #f9f9f9;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.log-card:hover {
+    background: #e0e7ff;
+    transform: translateX(5px);
+}
+
+.log-card a {
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.active-log {
+    background: #667eea !important;
+    color: white;
+}
+
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    text-decoration: none;
+    font-size: 14px;
+    color: #999;
+}
+
+.delete-btn:hover {
+    color: red;
+}

@@ -6,40 +6,82 @@
 </head>
 <body>
 
-<div class="container">
-    <h2>📄 Document Processing</h2>
-    <p>Upload your invoice/image</p>
+<div class="main-container">
 
-    <form method="post" enctype="multipart/form-data" id="uploadForm">
-       <div class="drop-area" id="drop-area">
-        <p id="drop-text">Drag & Drop file here or click to upload</p>
-        <input type="file" name="file" id="fileInput" required hidden>
+    <!-- LEFT PANEL -->
+    <div class="sidebar">
+        <h2>Doc Processor</h2>
+
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            <div class="drop-area" id="drop-area">
+                <p id="drop-text">Upload Image/PDF</p>
+                <input type="file" name="file" id="fileInput" required hidden>
+            </div>
+
+            <div id="file-info" class="file-info hidden">
+                <span id="file-name"></span>
+                <button type="button" id="remove-btn">❌</button>
+            </div>
+
+            <button type="submit">Process</button>
+        </form>
+
+        <h3>Logs</h3>
+        <div class="logs">
+            {% for log in logs %}
+                <div class="log-card 
+                    {% if selected_log and log._id == selected_log._id %}active-log{% endif %}">
+
+                <div class="log-header">
+                    <a href="/log/{{ log._id }}">
+                        {{ log.filename[:20] }}...
+                    </a>
+
+                    <a href="/delete/{{ log._id }}" class="delete-btn">❌</a>
+                </div>
+
+</div>
+            {% endfor %}
         </div>
-        <div id="file-info" class="file-info hidden">
-        <span id="file-name"></span>
-        <button type="button" id="remove-btn">❌</button>
-        </div>
-
-        <button type="submit">Process Document</button>
-    </form>
-
-    <div id="loader" class="loader hidden"></div>
-
-    {% if result %}
-    <div class="result">
-        <h3>Output</h3>
-        <pre>{{ result }}</pre>
-
-        {% if '"VALID"' in result %}
-            <span class="badge valid">VALID ✅</span>
-        {% else %}
-            <span class="badge invalid">INVALID ❌</span>
-        {% endif %}
     </div>
-    {% endif %}
+
+    <!-- RIGHT PANEL -->
+    <div class="content">
+
+        {% if selected_log %}
+            <h2>Document Details</h2>
+
+            <div class="result">
+                <h3>OCR Text</h3>
+                <pre>{{ selected_log.raw_text }}</pre>
+            </div>
+
+            <div class="result">
+                <h3>Extracted Data</h3>
+                <pre>{{ selected_log.data }}</pre>
+            </div>
+
+            <div class="result">
+                <h3>Validation</h3>
+                <pre>{{ selected_log.validation }}</pre>
+
+                {% if selected_log.validation.status == "VALID" %}
+                    <span class="badge valid">VALID</span>
+                {% else %}
+                    <span class="badge invalid">INVALID</span>
+                {% endif %}
+            </div>
+
+        {% else %}
+            <h2>Select a log to view results</h2>
+        {% endif %}
+
+    </div>
+
 </div>
 
 <script>
+// SAME JS (no changes needed)
 const dropArea = document.getElementById('drop-area');
 const fileInput = document.getElementById('fileInput');
 const fileNameDisplay = document.getElementById('file-name');
@@ -49,32 +91,25 @@ const dropText = document.getElementById('drop-text');
 const form = document.getElementById('uploadForm');
 const loader = document.getElementById('loader');
 
-// Click to open file picker
 dropArea.addEventListener('click', () => fileInput.click());
 
-// When file selected
 fileInput.addEventListener('change', () => {
     if (fileInput.files.length > 0) {
         fileNameDisplay.textContent = fileInput.files[0].name;
         fileInfo.classList.remove('hidden');
-        dropText.textContent = "File ready to upload";
+        dropText.textContent = "File ready";
     }
 });
 
-// Drag over
 dropArea.addEventListener('dragover', (e) => {
     e.preventDefault();
     dropArea.classList.add('hover');
-    dropText.textContent = "Drop file here";
 });
 
-// Drag leave
 dropArea.addEventListener('dragleave', () => {
     dropArea.classList.remove('hover');
-    dropText.textContent = "Drag & Drop file here or click to upload";
 });
 
-// Drop file
 dropArea.addEventListener('drop', (e) => {
     e.preventDefault();
     fileInput.files = e.dataTransfer.files;
@@ -83,21 +118,17 @@ dropArea.addEventListener('drop', (e) => {
     if (fileInput.files.length > 0) {
         fileNameDisplay.textContent = fileInput.files[0].name;
         fileInfo.classList.remove('hidden');
-        dropText.textContent = "File ready to upload";
     }
 });
 
-// Remove file
 removeBtn.addEventListener('click', () => {
     fileInput.value = "";
     fileInfo.classList.add('hidden');
     fileNameDisplay.textContent = "";
-    dropText.textContent = "Drag & Drop file here or click to upload";
 });
 
-// Loader
 form.addEventListener('submit', () => {
-    loader.classList.remove('hidden');
+    loader?.classList.remove('hidden');
 });
 </script>
 
