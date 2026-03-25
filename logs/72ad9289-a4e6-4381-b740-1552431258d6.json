@@ -1,0 +1,20 @@
+{
+    "filename": "08ced67d-4a8c-4fd5-b67b-b745e083ab51_Invoice_2271286433.pdf",
+    "raw_text": "aws\n\n~~) .\nAmazon Web Services Statement\n\nAccount number: Email or talk to us about your AWS account or bill, visit aws.amazon.com/contact-us/\n5901 83860844 Submit feedback on your Invoice Experience here.\n\nStatement Summary\nBill to Address: Statement Number: 2271286433\nATTN: Sai Charan Mandakuriti Statement Date: August 1 , 2025\n\nvont Colony TOTAL AMOUNT DUE BY August 1 , 2025 INR 69.26\n\nSrikakulam, Andhra pradesh, 532001, IN\n\nThis Account Summary is for the billing period July 1 - July 31 , 2025\n\nGreetings from Amazon Web Services India Private Limited (formerly known as Amazon Internet Services Private Limited). We are writing to provide\nyou with an account summary of your use of AWS services. Additional information about your bill, individual service charge details, and your account\nhistory are available on the Account Activity Page.\n\nSummary\nAWS Service Charges $0.79\nCharges $0.67\nCredits $0.00\nGST $0.12\nTotal for this statement in USD $0.79\n\n\u2018INR total calculated using a conversion rate of 87.670580000 .\n\nDetail\nAmazon Simple Storage Service $0.00\nCharges $0.00\nGST $0.00\nAmazon Elastic Compute Cloud $0.79\nCharges $0.67\nGST $0.12\n\nand recurring charg harged on\n\none-tim\nJate that they occur. Please note: this is not a GST Invoice. To view your GST invoice, please go to the\n- Bills page in Billing and Management Console\n\n\n",
+    "data": {
+        "name": null,
+        "amount": null,
+        "date": null,
+        "id": null
+    },
+    "validation": {
+        "status": "INVALID",
+        "errors": [
+            "Missing name",
+            "Invalid amount",
+            "Invalid date format (DD/MM/YYYY expected)",
+            "Missing ID"
+        ]
+    },
+    "confidence": 0
+}

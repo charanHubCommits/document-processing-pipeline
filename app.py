@@ -1,23 +1,21 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect
 from ocr import extract_text
 from extractor import extract_fields
 from validator import validate_data
 import os
 import uuid
 import json
-from pymongo import MongoClient
-from bson.objectid import ObjectId
 
 app = Flask(__name__)
-client = MongoClient("mongodb://localhost:27017/")
-db = client["doc_processing"]
-collection = db["logs"]
 
-# Folder to store uploads
-UPLOAD_FOLDER = 'uploads'
+LOGS_FOLDER = "logs"
+UPLOAD_FOLDER = "uploads"
+
+os.makedirs(LOGS_FOLDER, exist_ok=True)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Allowed file types
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
 def allowed_file(filename):
@@ -25,22 +23,19 @@ def allowed_file(filename):
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/', methods=['GET', 'POST'])
 def upload_file():
     selected_log = None
+    selected_filename = None
 
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return "No file part"
+        file = request.files.get('file')
 
-        file = request.files['file']
-
-        if file.filename == '':
+        if not file or file.filename == '':
             return "No file selected"
 
-        if file and allowed_file(file.filename):
+        if allowed_file(file.filename):
             filename = str(uuid.uuid4()) + "_" + file.filename
-            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filepath = os.path.join(UPLOAD_FOLDER, filename)
             file.save(filepath)
 
             # Process
@@ -48,44 +43,77 @@ def upload_file():
             structured_data = extract_fields(extracted_text)
             validation_result = validate_data(structured_data)
 
-            #STORE IN MONGODB
+            # Confidence
+            confidence = 100 - (len(validation_result["errors"]) * 25)
+            confidence = max(confidence, 0)
+
+            # Save log
+            log_filename = str(uuid.uuid4()) + ".json"
+            log_path = os.path.join(LOGS_FOLDER, log_filename)
+
             log_entry = {
                 "filename": filename,
                 "raw_text": extracted_text,
                 "data": structured_data,
                 "validation": validation_result,
+                "confidence": confidence
             }
 
-            inserted = collection.insert_one(log_entry)
-            selected_log = collection.find_one({"_id": inserted.inserted_id})
+            with open(log_path, "w") as f:
+                json.dump(log_entry, f, indent=4)
+
+            selected_log = log_entry
+            selected_filename = log_filename
 
         else:
             return "Invalid file type"
 
-    #FETCH ALL LOGS
-    logs = list(collection.find().sort("_id", -1))
+    # Load logs
+    logs = sorted(
+        [f for f in os.listdir(LOGS_FOLDER) if f.endswith(".json")],
+        reverse=True
+    )
 
     return render_template(
         "index.html",
         logs=logs,
-        selected_log=selected_log
+        selected_log=selected_log,
+        selected_filename=selected_filename
     )
-@app.route('/log/<log_id>')
-def view_log(log_id):
-    log = collection.find_one({"_id": ObjectId(log_id)})
-    logs = list(collection.find().sort("_id", -1))
+
+
+@app.route('/log/<filename>')
+def view_log(filename):
+    path = os.path.join(LOGS_FOLDER, filename)
+
+    if not os.path.exists(path):
+        return "Log not found"
+
+    with open(path, "r") as f:
+        log = json.load(f)
+
+    logs = sorted(
+        [f for f in os.listdir(LOGS_FOLDER) if f.endswith(".json")],
+        reverse=True
+    )
 
     return render_template(
         "index.html",
         logs=logs,
-        selected_log=log
+        selected_log=log,
+        selected_filename=filename
     )
 
 
-@app.route('/delete/<log_id>')
-def delete_log(log_id):
-    collection.delete_one({"_id": ObjectId(log_id)})
-    return redirect(url_for('upload_file'))
+@app.route('/delete/<filename>')
+def delete_log(filename):
+    path = os.path.join(LOGS_FOLDER, filename)
+
+    if os.path.exists(path):
+        os.remove(path)
+
+    return redirect('/')
+
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, port=5001)

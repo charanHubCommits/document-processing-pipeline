@@ -29,18 +29,22 @@
         <h3>Logs</h3>
         <div class="logs">
             {% for log in logs %}
-                <div class="log-card 
-                    {% if selected_log and log._id == selected_log._id %}active-log{% endif %}">
+            <div class="log-card 
+                {% if selected_filename == log %}active-log{% endif %}">
 
                 <div class="log-header">
-                    <a href="/log/{{ log._id }}">
-                        {{ log.filename[:20] }}...
+                    <a href="/log/{{ log }}">
+                        {{ log[:20] }}...
                     </a>
 
-                    <a href="/delete/{{ log._id }}" class="delete-btn">❌</a>
+                    <a href="/delete/{{ log }}" 
+                    class="delete-btn"
+                    onclick="return confirm('Delete this log?')">
+                    ❌
+                    </a>
                 </div>
 
-</div>
+            </div>
             {% endfor %}
         </div>
     </div>

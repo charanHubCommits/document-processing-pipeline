@@ -1,0 +1,17 @@
+{
+    "filename": "826310a5-546f-41df-9cdd-b951d5f47ca3_Screenshot 2026-03-23 at 23.35.36.png",
+    "raw_text": "Invoice\n\nAmount: 5000\nDate: 20/03/2026\nID: INV123\n\n",
+    "data": {
+        "name": null,
+        "amount": "5000",
+        "date": "20/03/2026",
+        "id": "INV123"
+    },
+    "validation": {
+        "status": "INVALID",
+        "errors": [
+            "Missing name"
+        ]
+    },
+    "confidence": 75
+}
